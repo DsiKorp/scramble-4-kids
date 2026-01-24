@@ -66,6 +66,7 @@ export const ScrambleWords = () => {
         return (
             <div className="min-h-screen bg-gradient-to-br from-purple-100 via-blue-50 to-indigo-100 flex items-center justify-center p-4">
                 <div className="w-full max-w-md mx-auto">
+                    <img src="ScrambleWords.png" alt="Juego de palabras desordenadas" />
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
                         Palabras desordenadas
                     </h1>
@@ -88,18 +89,16 @@ export const ScrambleWords = () => {
             <div className="w-full max-w-md mx-auto">
                 {/* Header */}
                 <div className="text-center mb-8">
-                    {/* <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
-                        Scramble for Kids
-                    </h1> */}
+
                     <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent mb-2">
                         Scramble for Kids Palabras desordenadas
                     </h1>
+                    <img src="ScrambleWords1.png" alt="Juego de palabras desordenadas" />
+                    <br />
                     <p className="text-gray-600">
                         Ordena las letras para encontrar la palabra! En la parte inferior encontrarás todas las palabras del juego.
                     </p>
-                    {/* <p className="text-gray-600">
-                        En la parte inferior encontrarás todas las palabras del juego.
-                    </p> */}
+
                 </div>
 
                 {/* Main Game Card */}
@@ -209,6 +208,11 @@ export const ScrambleWords = () => {
                         <br />
                         <br />
                         {words.join(', ')}
+                    </p>
+                    <p>
+                        <hr /><br />
+
+                        DsiKorp ®2026
                     </p>
                 </div>
             </div>
