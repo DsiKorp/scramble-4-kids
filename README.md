@@ -1,73 +1,92 @@
-# React + TypeScript + Vite
+## Scramble 4 Kids
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Juego de palabras desordenadas para practicar vocabulario. La app toma una lista de palabras, mezcla sus letras y el usuario debe adivinar la palabra correcta. Incluye puntaje, limite de errores, limite de saltos y animacion de confetti al acertar.
 
-Currently, two official plugins are available:
+Repositorio: https://github.com/DsiKorp/scramble-4-kids.git
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Stack y herramientas
 
-## React Compiler
+- React 19 + TypeScript + Vite.
+- Tailwind CSS con shadcn/ui para componentes.
+- canvas-confetti para celebraciones.
+- lucide-react para iconos.
 
-The React Compiler is currently not compatible with SWC. See [this issue](https://github.com/vitejs/vite-plugin-react/issues/428) for tracking the progress.
+## Como correr el proyecto
 
-## Expanding the ESLint configuration
+1. Instalar dependencias:
+	- `npm install`
+2. Levantar entorno dev:
+	- `npm run dev`
+3. Build de produccion:
+	- `npm run build`
+4. Lint:
+	- `npm run lint`
+5. Preview del build:
+	- `npm run preview`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Descripcion del codigo
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+**Entrada principal**
+- [src/main.tsx](src/main.tsx) crea el root de React, carga estilos globales y renderiza `ScrambleWords`.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+**Estilos globales**
+- [src/index.css](src/index.css) importa Tailwind y define variables de tema, mas utilidades de layout como `bg-gradient`.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**UI principal (useReducer)**
+- [src/Scramble/ScrambleWords.tsx](src/Scramble/ScrambleWords.tsx) es el componente principal.
+- Usa `useReducer` para manejar el estado del juego y efectos para disparar confetti cuando sube el puntaje.
+- Muestra la palabra mezclada, input de adivinanza, puntaje, errores y botones de saltar/reiniciar.
+- Cuando no quedan palabras, muestra pantalla de fin con resumen.
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+**Estado del juego (reducer)**
+- [src/Scramble/useReducer/scrambleWordReducer.ts](src/Scramble/useReducer/scrambleWordReducer.ts) define:
+  - `ScrambleWordsState` con los contadores, palabra actual, palabra mezclada y lista.
+  - `scrambleWordsReducer` con acciones:
+	 - `SET_GUESS`: normaliza la adivinanza a mayusculas.
+	 - `CHECK_ANSWER`: suma puntos o incrementa errores.
+	 - `SKIP_WORD`: salta palabra con limite de saltos.
+	 - `START_NEW_GAME`: resetea el estado.
+  - `getInitialState()` genera un juego nuevo con palabras mezcladas.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Version alternativa (useState)**
+- [src/Scramble/ScrambleWordsUseState.tsx](src/Scramble/ScrambleWordsUseState.tsx) conserva la misma logica pero con `useState`. No esta montado en [src/main.tsx](src/main.tsx), queda como referencia didactica.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Utilidades**
+- [src/lib/utils.ts](src/lib/utils.ts) provee `cn()` para combinar clases Tailwind.
+
+## Descripcion de package.json
+
+**Scripts**
+- `dev`: inicia Vite en modo desarrollo.
+- `build`: compila TypeScript y genera el build de Vite.
+- `lint`: ejecuta ESLint.
+- `preview`: previsualiza el build.
+
+**Dependencias principales**
+- `react`, `react-dom`: base de UI.
+- `tailwindcss`, `@tailwindcss/vite`: estilos y plugin para Vite.
+- `@radix-ui/react-*` y `class-variance-authority`, `clsx`, `tailwind-merge`: base de shadcn/ui.
+- `canvas-confetti`: animacion al acertar.
+- `lucide-react`: iconos.
+
+**DevDependencies**
+- `typescript`, `@types/*`: tipado.
+- `eslint`, `typescript-eslint`, `eslint-plugin-react-*`: linting.
+- `@vitejs/plugin-react-swc`, `vite`: tooling.
+- `tw-animate-css`: animaciones.
+
+## Notas
+
+- El componente principal asume la instalacion de shadcn/ui y Tailwind en Vite.
+- Las palabras se definen en el reducer y se mezclan al iniciar cada partida.
+
+## Despliegue
+
+**Netlify**
+- Build command: `npm run build`
+- Publish directory: `dist`
+
+**Vercel**
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
